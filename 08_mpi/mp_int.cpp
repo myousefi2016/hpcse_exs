@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		int y;
 		MPI_Recv(&y, 1, MPI_INT, 0, 123, MPI_COMM_WORLD, &status);
 		std::cout << "Recieved " << y << "\n"
-		          << "plus 1 equal" << y + 1 <<"\n";
+		          << "plus 1 equal " << y + 1 <<"\n";
 	}
 	MPI_Finalize();
 	return 0;

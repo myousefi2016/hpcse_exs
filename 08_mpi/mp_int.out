@@ -44,3 +44,93 @@ exiting or it will be considered an "abnormal termination"
 This may have caused other processes in the application to be
 terminated by signals sent by mpirun (as reported here).
 --------------------------------------------------------------------------
+Sender: LSF System <lsfadmin@e1333>
+Subject: Job 32340781: <mpirun ./mp_int> in cluster <euler> Done
+
+Job <mpirun ./mp_int> was submitted from host <euler08> by user <xingwang> in cluster <euler>.
+Job was executed on host(s) <2*e1333>, in queue <normal.4h>, as user <xingwang> in cluster <euler>.
+</cluster/home/xingwang> was used as the home directory.
+</cluster/home/xingwang/hpcse/myexs/08_mpi> was used as the working directory.
+Started at Sat Nov 19 11:51:40 2016
+Results reported on Sat Nov 19 11:51:42 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+mpirun ./mp_int
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :               0.14 sec.
+    Total Requested Memory : 2048.00 MB
+    Delta Memory :           -
+    (Delta: the difference between Total Requested Memory and Max Memory.)
+
+The output (if any) follows:
+
+Recieved 33
+plus 1 equal34
+Sender: LSF System <lsfadmin@e1338>
+Subject: Job 32340846: <mpirun ./mp_int> in cluster <euler> Done
+
+Job <mpirun ./mp_int> was submitted from host <euler08> by user <xingwang> in cluster <euler>.
+Job was executed on host(s) <2*e1338>, in queue <normal.4h>, as user <xingwang> in cluster <euler>.
+</cluster/home/xingwang> was used as the home directory.
+</cluster/home/xingwang/hpcse/myexs/08_mpi> was used as the working directory.
+Started at Sat Nov 19 11:57:21 2016
+Results reported on Sat Nov 19 11:57:23 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+mpirun ./mp_int
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :               0.12 sec.
+    Total Requested Memory : 2048.00 MB
+    Delta Memory :           -
+    (Delta: the difference between Total Requested Memory and Max Memory.)
+
+The output (if any) follows:
+
+Recieved 33
+plus 1 equal 34
+Sender: LSF System <lsfadmin@e1342>
+Subject: Job 32340863: <mpirun ./mp_int> in cluster <euler> Done
+
+Job <mpirun ./mp_int> was submitted from host <euler08> by user <xingwang> in cluster <euler>.
+Job was executed on host(s) <2*e1342>, in queue <normal.4h>, as user <xingwang> in cluster <euler>.
+</cluster/home/xingwang> was used as the home directory.
+</cluster/home/xingwang/hpcse/myexs/08_mpi> was used as the working directory.
+Started at Sat Nov 19 12:04:12 2016
+Results reported on Sat Nov 19 12:04:14 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+mpirun ./mp_int
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :               0.11 sec.
+    Total Requested Memory : 2048.00 MB
+    Delta Memory :           -
+    (Delta: the difference between Total Requested Memory and Max Memory.)
+
+The output (if any) follows:
+
+Recieved 33
+plus 1 equal 34
