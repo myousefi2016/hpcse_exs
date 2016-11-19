@@ -2,10 +2,10 @@ CC=mpicxx
 
 CFLAGS=-std=c++
 
-all:ex01
+all:rank_size
 
-ex01:ex01.cpp
-	$(CC) --std=c++11 -o ex01 ex01.cpp
+rank_size:rank_size.cpp
+	$(CC) --std=c++11 -o rank_size rank_size.cpp
 
 clean:
-	rm -f ex01
+	rm -f rank_size
