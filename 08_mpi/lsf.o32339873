@@ -1,0 +1,32 @@
+Sender: LSF System <lsfadmin@e1308>
+Subject: Job 32339873: <mpirun ./rank_size> in cluster <euler> Done
+
+Job <mpirun ./rank_size> was submitted from host <euler08> by user <xingwang> in cluster <euler>.
+Job was executed on host(s) <4*e1308>, in queue <normal.4h>, as user <xingwang> in cluster <euler>.
+</cluster/home/xingwang> was used as the home directory.
+</cluster/home/xingwang/hpcse/myexs/08_mpi> was used as the working directory.
+Started at Sat Nov 19 10:20:02 2016
+Results reported on Sat Nov 19 10:20:04 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+mpirun ./rank_size
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :               0.20 sec.
+    Total Requested Memory : 4096.00 MB
+    Delta Memory :           -
+    (Delta: the difference between Total Requested Memory and Max Memory.)
+
+The output (if any) follows:
+
+I am rank 0 of 4.
+I am rank 1 of 4.
+I am rank 2 of 4.
+I am rank 3 of 4.
