@@ -9,8 +9,13 @@ int main(int argc, char* argv[])
 	if(num==0){
 		MPI_Status status;
 		char txt[100];
+		MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, &status);
+		std::cout << "A message is waiting from " << status->MPI_SOURCE
+		          << "with tag "                  << status->MPI_TAG;
 		MPI_Recv(txt, 100, MPI_CHAR,
 			1, 42, MPI_COMM_WORLD, &status);
+		MPI_Get_count(&status, MPI_INIT, &count);
+		std::cout << "and assuming it contains ints there are" << count << "elements";
 		std::cout << txt << "\n";
 	}
 	else{
