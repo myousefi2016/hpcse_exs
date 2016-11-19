@@ -9,7 +9,7 @@ int main(int argc, char const *argv[])
 		MPI_Status status;
 		char txt[100];
 		MPI_Recv(txt, 100, MPI_CHAR,
-			1, 42, MPI_COMM_WORLD, &status)
+			1, 42, MPI_COMM_WORLD, &status);
 		std::cout << txt << "\n";
 	}
 	else{
