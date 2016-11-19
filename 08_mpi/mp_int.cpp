@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-	MPI_Init(&argc, *&argv);
+	MPI_Init(&argc, &argv);
 	int rank;
 	MPI_Status status;
 
@@ -18,5 +18,6 @@ int main(int argc, char *argv[])
 		std::cout << "Recieved " << y << "\n"
 		          << "plus 1 equal" << y + 1 <<"\n";
 	}
+	MPI_Finalize();
 	return 0;
 }
