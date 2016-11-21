@@ -2,7 +2,7 @@ CC=mpic++
 
 CFLAGS=-std=c++11
 
-all:rank_size hello_world mp_int deadblock5
+all:rank_size hello_world mp_int deadblock5 diffusion1d
 
 rank_size:rank_size.cpp
 	$(CC) $(CFLAGS) -o rank_size rank_size.cpp
@@ -12,6 +12,8 @@ mp_int:mp_int.cpp
 	$(CC) $(CFLAGS) -o mp_int mp_int.cpp
 deadblock5:deadblock5.cpp
 	$(CC) $(CFLAGS) -o deadblock5 deadblock5.cpp
+diffusion1d:diffusion1d.cpp
+	$(CC) $(CFLAGS) -o diffusion1d diffusion1d.cpp
 
 clean:
-	rm -f rank_size hello_world mp_int deadblock5
+	rm -f rank_size hello_world mp_int deadblock5 diffusion1d
