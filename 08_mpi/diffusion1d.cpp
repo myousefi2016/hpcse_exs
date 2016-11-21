@@ -15,8 +15,8 @@ int main(int argc, char const *argv[])
 	int nt = (te - ts)/dt;
 	int nx = (xe - xs)/dx;
 
-	double den[1000000];
-	double den_new[1000000];
+	double den[100000];
+	double den_new[100000];
 	// initialize the den
 	std::cout << "xs = " << xs
 	          << "\n xe = " << xe
