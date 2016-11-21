@@ -14,16 +14,16 @@ int main(int argc, char const *argv[])
 	double dt = 0.001;
 
 	int nt = (te - ts)/dt;
-	int nx = (b - a)/dx;
+	int nx = (xs - xe)/dx;
 
 	double density[nx];
 	// initialize the density
-	for(i=0; i<nx; i++) {
+	for(int i=0; i<nx; i++) {
 		density[i] = std::sin(xs + i*dx)
 	}
 
-	for(i=0; i < nt; i++) {
-		for(j=1; j < nx - 1; j++) {
+	for(int i=0; i < nt; i++) {
+		for(int j=1; j < nx - 1; j++) {
 			density[j] = (density[j+1] + density[j-1] - 2*density[i])/dx/dx*dt 
 			             + density[i]
 		}
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
 	}
 	ofstream dfile;
 	dfile.open('density.dat');
-	for(i=0; i<nx; i++) {
+	for(int i=0; i<nx; i++) {
 		dfile << xs + i*dx << "    " << density[i] << std::endl;
 	}
 
