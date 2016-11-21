@@ -1,3 +1,4 @@
+#include <mpi.h>
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -13,17 +14,10 @@ int main(int argc, char const *argv[])
 	double dt = 0.001;
 
 	int nt = (te - ts)/dt;
-	int nx = (xe - xs)/dx;
+	int nx = (xs - xe)/dx;
 
-	double density[1000000];
+	double density[nx];
 	// initialize the density
-	std::cout << "xs = " << xs
-	          << "\n xe = " << xe
-	          << "\n nx = " << nx
-	          << "\n ts = " << te
-	          << "\n te = " << te
-	          << "\n nt = " << nt << std::endl;
- 
 	for(int i=0; i<nx; i++) {
 		density[i] = std::sin(xs + i*dx);
 	}
@@ -45,7 +39,7 @@ int main(int argc, char const *argv[])
 			             + density[nx - 1];
 	}
 	std::ofstream output;
-	output.open("output_density.dat");
+	output.open("density.dat");
 	for(int i=0; i<nx; i++) {
 		output << xs + i*dx << "    " << density[i] << std::endl;
 	}

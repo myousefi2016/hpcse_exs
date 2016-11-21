@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 		std::string txt = "Hello world!";
 		MPI_Send(const_cast<char*>(txt.c_str()), txt.size()+1, MPI_CHAR,
 			0, 42, MPI_COMM_WORLD);
-		std::cout << "rank " << num << "sent message \n";
+		std::cout << "rank " << num << " sent message \n";
 	}
 	MPI_Finalize();
 	return 0;

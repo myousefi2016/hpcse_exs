@@ -147,3 +147,36 @@ The output (if any) follows:
 
 A message is waiting from 1 with tag 42 and assuming it contains ints there are -32766 elements
 Hello world!
+Sender: LSF System <lsfadmin@e1202>
+Subject: Job 32341190: <mpirun ./hello_world> in cluster <euler> Done
+
+Job <mpirun ./hello_world> was submitted from host <euler08> by user <xingwang> in cluster <euler>.
+Job was executed on host(s) <4*e1202>, in queue <normal.4h>, as user <xingwang> in cluster <euler>.
+</cluster/home/xingwang> was used as the home directory.
+</cluster/home/xingwang/hpcse/myexs/08_mpi> was used as the working directory.
+Started at Sat Nov 19 12:39:21 2016
+Results reported on Sat Nov 19 12:39:23 2016
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+mpirun ./hello_world
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :               0.17 sec.
+    Total Requested Memory : 4096.00 MB
+    Delta Memory :           -
+    (Delta: the difference between Total Requested Memory and Max Memory.)
+
+The output (if any) follows:
+
+A message is waiting from 3 with tag 42 and assuming it contains ints there are -32766 elements
+Hello world!
+rank 1sent message 
+rank 2sent message 
+rank 3sent message 

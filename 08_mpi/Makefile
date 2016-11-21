@@ -13,7 +13,8 @@ mp_int:mp_int.cpp
 deadblock5:deadblock5.cpp
 	$(CC) $(CFLAGS) -o deadblock5 deadblock5.cpp
 diffusion1d:diffusion1d.cpp
+	g++ $(CFLAGS) -o diffusion1d diffusion1d.cpp
+diffusion1d_mpi:diffusion1d.cpp
 	$(CC) $(CFLAGS) -o diffusion1d diffusion1d.cpp
-
 clean:
 	rm -f rank_size hello_world mp_int deadblock5 diffusion1d
