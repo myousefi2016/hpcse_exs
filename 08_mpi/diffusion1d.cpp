@@ -36,8 +36,8 @@ int main(int argc, char const *argv[])
 
 	for(int i=0; i < nt; i++) {
 		for(int j=1; j < nx - 1; j++) {
-			density[j] = (density[j+1] + density[j-1] - 2*density[i])/dx/dx*dt 
-			             + density[i];
+			density[j] = (density[j+1] + density[j-1] - 2*density[j])/dx/dx*dt 
+			             + density[j];
 		}
 		density[0] = (density[2] + density[0] - 2*density[1])/dx/dx*dt 
 			             + density[0];
