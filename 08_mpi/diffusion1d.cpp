@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <iostream>
 #include <cmath>
+#include <fstream>
 
 int main(int argc, char const *argv[])
 {
@@ -31,17 +32,13 @@ int main(int argc, char const *argv[])
 		density[nx - 1] = (density[nx - 1] + density[nx - 3] - 2*density[nx - 2])/dx/dx*dt 
 			             + density[nx - 1]
 	}
-
-
-	MPI_Init(&argc, &argv);
-	MPI_Status status;
-	int rank;
-	int size;
-	MPI_Comm_rank(&rank);
-	MPI_Comm_size(&size);
-
-	if(rank % 2 ==0) {
-		MPI_Send(&density[1])
+	ofstream dfile;
+	dfile.open('density.dat');
+	for(i=0; i<nx; i++) {
+		dfile << xs + i*dx << "    " << density[i] << std::endl;
 	}
+
+
+
 	return 0;
 }
