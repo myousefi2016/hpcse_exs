@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 			             + density[nx - 1]
 	}
 	ofstream dfile;
-	dfile.open('density.dat');
+	dfile.open("density.dat");
 	for(int i=0; i<nx; i++) {
 		dfile << xs + i*dx << "    " << density[i] << std::endl;
 	}
