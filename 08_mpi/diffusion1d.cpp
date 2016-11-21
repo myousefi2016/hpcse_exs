@@ -15,8 +15,9 @@ int main(int argc, char const *argv[])
 	int nt = (te - ts)/dt;
 	int nx = (xe - xs)/dx;
 
-	double density[1000000];
-	// initialize the density
+	double den[1000000];
+	double den_new[1000000];
+	// initialize the den
 	std::cout << "xs = " << xs
 	          << "\n xe = " << xe
 	          << "\n nx = " << nx
@@ -25,29 +26,32 @@ int main(int argc, char const *argv[])
 	          << "\n nt = " << nt << std::endl;
  
 	for(int i=0; i<nx; i++) {
-		density[i] = std::sin(xs + i*dx);
+		den[i] = std::sin(xs + i*dx);
 	}
 
 	std::ofstream input;
-	input.open("input_density.dat");
+	input.open("input_den.dat");
 	for(int i=0; i<nx; i++) {
-		input << xs + i*dx << "    " << density[i] << std::endl;
+		input << xs + i*dx << "    " << den[i] << std::endl;
 	}
 
 	for(int i=0; i < nt; i++) {
 		for(int j=1; j < nx - 1; j++) {
-			density[j] = (density[j+1] + density[j-1] - 2*density[j])/dx/dx*dt 
-			             + density[j];
+			den_new[j] = (den[j+1] + den[j-1] - 2*den[j])/dx/dx*dt 
+			             + den[j];
 		}
-		density[0] = (density[2] + density[0] - 2*density[1])/dx/dx*dt 
-			             + density[0];
-		density[nx - 1] = (density[nx - 1] + density[nx - 3] - 2*density[nx - 2])/dx/dx*dt 
-			             + density[nx - 1];
+		den_new[0] = (den[2] + den[0] - 2*den[1])/dx/dx*dt 
+			             + den[0];
+		den_new[nx - 1] = (den[nx - 1] + den[nx - 3] - 2*den[nx - 2])/dx/dx*dt 
+			             + den[nx - 1];
+		for(int j=0; j < nx; j++) {
+			den[j] = den_new[j];
+		}
 	}
 	std::ofstream output;
-	output.open("output_density.dat");
+	output.open("output_den.dat");
 	for(int i=0; i<nx; i++) {
-		output << xs + i*dx << "    " << density[i] << std::endl;
+		output << xs + i*dx << "    " << den[i] << std::endl;
 	}
 
 
