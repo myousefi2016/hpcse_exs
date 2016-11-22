@@ -2,6 +2,13 @@
 #include <cmath>
 #include <fstream>
 
+class Diffusion1 {
+public:
+	Diffusion1(double L, int N, double dt, ) {
+		//
+		dr = L/(N-1);
+	}
+}
 
 int main(int argc, char const *argv[])
 {
