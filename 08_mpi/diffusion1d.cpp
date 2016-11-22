@@ -7,7 +7,7 @@ int main(int argc, char const *argv[])
 {
 	double xs = 0;
 	double xe = 1;
-	double dx = 0.001;
+	double dx = 0.01;
 
 	double ts = 0;
 	double te = 1;
