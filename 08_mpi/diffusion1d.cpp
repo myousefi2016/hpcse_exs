@@ -5,6 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
+        double D = 0.1;
 	double xs = 0;
 	double xe = 1;
 	double dx = 0.01;
@@ -43,7 +44,7 @@ int main(int argc, char const *argv[])
 
 	for(int i=0; i < nt; i++) {
 		for(int j=1; j < nx - 1; j++) {
-			den_new[j] = (den[j+1] + den[j-1] - 2*den[j])/dx/dx*dt 
+			den_new[j] = D*(den[j+1] + den[j-1] - 2*den[j])/dx/dx*dt 
 			             + den[j];
 		}
 		for(int j=1; j < nx - 1; j++) {
