@@ -6,12 +6,12 @@
 int main(int argc, char const *argv[])
 {
 	double xs = 0;
-	double xe = 3.1415926*2;
-	double dx = 0.01;
+	double xe = 1;
+	double dx = 0.001;
 
 	double ts = 0;
-	double te = 10;
-	double dt = 0.01;
+	double te = 1;
+	double dt = 0.00001;
 
 	int nt = (te - ts)/dt;
 	int nx = (xe - xs)/dx;
@@ -26,10 +26,13 @@ int main(int argc, char const *argv[])
 	          << "\n te = " << te
 	          << "\n nt = " << nt << std::endl;
  
-	for(int i=1; i< nx - 1; i++) {
-		den[i] = std::sin(i*dx);
+	for(int i=1; i< nx/2 - 1; i++) {
+		den[i] = 1;
 	}
-	den[0] = 0;
+	for(int i=1; i< nx - 1; i++) {
+		den[i] = 0;
+	}
+	den[0] = 1;
 	den[nx - 1] = 0;
  
 	std::ofstream input;
