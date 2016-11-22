@@ -7,11 +7,11 @@ int main(int argc, char const *argv[])
 {
 	double xs = 0;
 	double xe = 4;
-	double dx = 0.001;
+	double dx = 0.01;
 
 	double ts = 0;
 	double te = 10;
-	double dt = 0.001;
+	double dt = 0.01;
 
 	int nt = (te - ts)/dt;
 	int nx = (xe - xs)/dx;
@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
 		den[i] = 1;
 	}
 	den[0] = 0;
-	den[1] = 0;
+	den[nx - 1] = 0;
  
 	std::ofstream input;
 	input.open("input_den.dat");
