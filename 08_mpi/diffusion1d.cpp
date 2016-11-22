@@ -5,14 +5,14 @@
 
 int main(int argc, char const *argv[])
 {
-        double D = 0.1;
+	double D = 0.1;
 	double xs = 0;
 	double xe = 1;
 	double dx = 0.01;
 
 	double ts = 0;
 	double te = 1;
-	double dt = 0.00001;
+	double dt = 0.000001;
 
 	int nt = (te - ts)/dt;
 	int nx = (xe - xs)/dx;
