@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
 	          << "\n nt = " << nt << std::endl;
  
 	for(int i=1; i< nx - 1; i++) {
-		den[i] = std::sin(nx*dx);
+		den[i] = std::sin(i*dx);
 	}
 	den[0] = 0;
 	den[nx - 1] = 0;
