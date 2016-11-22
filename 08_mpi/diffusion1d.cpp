@@ -11,7 +11,7 @@ int main(int argc, char const *argv[])
 	double dx = 0.01;
 
 	double ts = 0;
-	double te = 0.001;
+	double te = 0.1;
 	double dt = 0.000001;
 
 	int nt = (te - ts)/dt;
