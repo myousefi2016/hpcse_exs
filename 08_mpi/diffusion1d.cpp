@@ -6,7 +6,7 @@
 int main(int argc, char const *argv[])
 {
 	double xs = 0;
-	double xe = 4;
+	double xe = 3.1415926*2;
 	double dx = 0.01;
 
 	double ts = 0;
@@ -27,7 +27,7 @@ int main(int argc, char const *argv[])
 	          << "\n nt = " << nt << std::endl;
  
 	for(int i=1; i< nx - 1; i++) {
-		den[i] = 1;
+		den[i] = std::sin(nx*dx);
 	}
 	den[0] = 0;
 	den[nx - 1] = 0;
