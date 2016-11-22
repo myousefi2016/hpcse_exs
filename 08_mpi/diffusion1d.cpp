@@ -2,6 +2,14 @@
 #include <cmath>
 #include <fstream>
 
+class Diffusion1 {
+public:
+	Diffusion1(double L, int N, double dt, ) {
+		//
+		dr = L/(N-1);
+	}
+}
+
 int main(int argc, char const *argv[])
 {
 	double xs = 0;
@@ -25,10 +33,12 @@ int main(int argc, char const *argv[])
 	          << "\n te = " << te
 	          << "\n nt = " << nt << std::endl;
  
-	for(int i=0; i<nx; i++) {
-		den[i] = std::sin(xs + i*dx);
+	for(int i=1; i< nx - 1; i++) {
+		den[i] = 1;
 	}
-
+	den[0] = 0;
+	den[1] = 0;
+ 
 	std::ofstream input;
 	input.open("input_den.dat");
 	for(int i=0; i<nx; i++) {
@@ -40,11 +50,7 @@ int main(int argc, char const *argv[])
 			den_new[j] = (den[j+1] + den[j-1] - 2*den[j])/dx/dx*dt 
 			             + den[j];
 		}
-		den_new[0] = (den[2] + den[0] - 2*den[1])/dx/dx*dt 
-			             + den[0];
-		den_new[nx - 1] = (den[nx - 1] + den[nx - 3] - 2*den[nx - 2])/dx/dx*dt 
-			             + den[nx - 1];
-		for(int j=0; j < nx; j++) {
+		for(int j=1; j < nx - 1; j++) {
 			den[j] = den_new[j];
 		}
 	}
