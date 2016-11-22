@@ -29,7 +29,7 @@ int main(int argc, char const *argv[])
 	for(int i=1; i< nx/2 - 1; i++) {
 		den[i] = 1;
 	}
-	for(int i=1; i< nx - 1; i++) {
+	for(int i=nx/2 - 1; i< nx - 1; i++) {
 		den[i] = 0;
 	}
 	den[0] = 1;
