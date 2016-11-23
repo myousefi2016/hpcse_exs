@@ -11,7 +11,7 @@ class Diffusion1D {
 private:
 	double D_, L_, dt_, dr_, fra_;
 	int Nr_, Nt_;
-	// std::vector<double> rho_;
+	std::vector<double> rho_;
 	std::vector<double> rho_tmp;
 
 public:
@@ -45,7 +45,7 @@ public:
 		}
 		out_file.close();
 	}
-	void Solver(double *rho) {
+	void Solver() {
 		for(int i=1; i < Nr_ - 1; i++) {
 			rho_tmp[i] = fra_*(rho_[i+1] + rho_[i-1] - 2*rho_[i]) 
 			             + rho_[i];
@@ -93,7 +93,7 @@ int main(int argc, char const *argv[])
 
     t.start();
     while(time < Nt) {
-    	MyDiff.Solver(rho);
+    	MyDiff.Solver();
     	time++;
     }
     t.stop();
@@ -101,6 +101,6 @@ int main(int argc, char const *argv[])
     std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
     
     MyDiff.Write("output");
-    MPI_Finalize();
+    MPI_Finalize();		
 	return 0;
 }
