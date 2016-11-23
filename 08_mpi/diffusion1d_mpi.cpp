@@ -1,50 +1,104 @@
-#include <mpi.h>
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <vector>
+#include <string>
+#include <mpi>
+#include "timer.hpp"
+
+
+class Diffusion1D {
+private:
+	double D_, L_, dt_, dr_, fra_;
+	int Nr_, Nt_;
+	// std::vector<double> rho_;
+	std::vector<double> rho_tmp;
+
+public:
+	Diffusion1D(const double D, 
+		        const double L, 
+		        const int Nr, 
+		        const int Nt, 
+		        const double dt)
+	:D_(D), L_(L), Nr_(Nr), Nt_(Nt), dt_(dt)  //Using Initialization Lists to Initialize 
+	{
+		//
+
+		dr_ = L_/(Nr_-1);
+		fra_ = D_*dt_/dr_/dr_;
+		rho_.resize(Nr_);
+		rho_tmp.resize(Nr_);
+	}
+	void Initialization() {
+		for(int i =0; i< Nr_/2 - 1; i++) {
+			rho_[i] = 1;
+		}
+		for(int i = Nr_/2 - 1; i< Nr_ - 1; i++) {
+			rho_[i] = 0;
+		}
+		rho_tmp = rho_;
+	}
+	void Write(std::string filename) {
+		std::ofstream out_file(filename);
+		for(int i=0; i< Nr_; i++) {
+			out_file << dr_*i << "    " << rho_[i] << std::endl;
+		}
+		out_file.close();
+	}
+	void Solver(double *rho) {
+		for(int i=1; i < Nr_ - 1; i++) {
+			rho_tmp[i] = fra_*(rho_[i+1] + rho_[i-1] - 2*rho_[i]) 
+			             + rho_[i];
+		}
+		std::swap(rho_, rho_tmp);
+	}
+};
 
 int main(int argc, char const *argv[])
 {
-	double xs = 0;
-	double xe = 4;
-	double dx = 0.001;
+	MPI_Statue status;
+	int size;
+	int rank;
 
-	double ts = 0;
-	double te = 10;
-	double dt = 0.001;
+	MPI_Comm_rank(&rank);
+	MPI_Comm_size(&size);
 
-	int nt = (te - ts)/dt;
-	int nx = (xs - xe)/dx;
-
-	double density[nx];
-	// initialize the density
-	for(int i=0; i<nx; i++) {
-		density[i] = std::sin(xs + i*dx);
-	}
-
-	std::ofstream input;
-	input.open("input_density.dat");
-	for(int i=0; i<nx; i++) {
-		input << xs + i*dx << "    " << density[i] << std::endl;
-	}
-
-	for(int i=0; i < nt; i++) {
-		for(int j=1; j < nx - 1; j++) {
-			density[j] = (density[j+1] + density[j-1] - 2*density[i])/dx/dx*dt 
-			             + density[i];
+	if(rank==0) {
+		if (argc < 6) {
+    		std::cerr << "Usage: " << argv[0] << " D L Nr Nt dt" << std::endl;
+    		return 1;
 		}
-		density[0] = (density[2] + density[0] - 2*density[1])/dx/dx*dt 
-			             + density[0];
-		density[nx - 1] = (density[nx - 1] + density[nx - 3] - 2*density[nx - 2])/dx/dx*dt 
-			             + density[nx - 1];
 	}
-	std::ofstream output;
-	output.open("density.dat");
-	for(int i=0; i<nx; i++) {
-		output << xs + i*dx << "    " << density[i] << std::endl;
-	}
+	int time = 0;
+	timer t;
+	
+	// Attention!!!
+	// convergence condition (dt)/(dr)**2 < 1/2
+	const double D  = std::stod(argv[1]);
+    const double L  = std::stod(argv[2]);
+    const int  Nr  = std::stoul(argv[3]);
+    const int  Nt  = std::stoul(argv[4]);
+    const double dt = std::stod(argv[5]);
+
+    double rho[Nr];
+
+	// std::vector<double> rho_;
 
 
+    Diffusion1D MyDiff(D, L, Nr, Nt, dt);
+		
+    MyDiff.Initialization();
+    MyDiff.Write("input");
 
+    t.start();
+    while(time < Nt) {
+    	MyDiff.Solver(rho);
+    	time++;
+    }
+    t.stop();
+
+    std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
+    
+    MyDiff.Write("output");
 	return 0;
 }

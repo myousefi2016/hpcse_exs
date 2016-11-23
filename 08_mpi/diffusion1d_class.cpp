@@ -3,6 +3,8 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include "timer.hpp"
+
 
 class Diffusion1D {
 private:
@@ -33,6 +35,7 @@ public:
 		for(int i = Nr_/2 - 1; i< Nr_ - 1; i++) {
 			rho_[i] = 0;
 		}
+		rho_tmp = rho_;
 	}
 	void Write(std::string filename) {
 		std::ofstream out_file(filename);
@@ -52,6 +55,12 @@ public:
 
 int main(int argc, char const *argv[])
 {
+	int time = 0;
+	timer t;
+	if (argc < 6) {
+        std::cerr << "Usage: " << argv[0] << " D L Nr Nt dt" << std::endl;
+        return 1;
+    }
 	// Attention!!!
 	// convergence condition (dt)/(dr)**2 < 1/2
 	const double D  = std::stod(argv[1]);
@@ -64,9 +73,16 @@ int main(int argc, char const *argv[])
 		
     MyDiff.Initialization();
     MyDiff.Write("input");
-    for(int i; i < Nt; i++) {
+
+    t.start();
+    while(time < Nt) {
     	MyDiff.Solver();
+    	time++;
     }
+    t.stop();
+
+    std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
+    
     MyDiff.Write("output");
 	return 0;
 }
