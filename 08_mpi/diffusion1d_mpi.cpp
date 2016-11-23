@@ -54,7 +54,7 @@ public:
 	}
 	void set(double *rho) {
 		for(int i=0; i<Nr_ - 1; i ++ ) {
-			rho_[i] = rho[i]
+			rho_[i] = rho[i];
 		}
 	}
 };
@@ -93,24 +93,26 @@ int main(int argc, char *argv[])
 		
     MyDiff.Initialization();
     MyDiff.Write("input");
-    lDiff.set(MyDiff.rho_[rank*(lNr - 1):((rank + 1)*lNr + 1)];
+    for(int i; i < lNr; i++) {
+    	lDiff.rho_[i] = MyDiff.rho_[rank*(lNr - 1) + i];
+    }
     while(time < Nt) {
     	if(rank==0) {
-			MPI_Send(rho[lNr-2], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD);
-			MPI_Recv(rho[lNr-1], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&lDiff.rho_[lNr-2], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&lDiff.rho_[lNr-1], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &status);
 		}
 		else if(rank==size-1) {
-			MPI_Send(rho[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(rho[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&lDiff.rho_[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&lDiff.rho_[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
 
 		}
 		else {
-			MPI_Send(rho[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(rho[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
-			MPI_Send(rho[lNr-2], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD);
-			MPI_Recv(rho[lNr-1], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&lDiff.rho_[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&lDiff.rho_[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&lDiff.rho_[lNr-2], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&lDiff.rho_[lNr-1], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &status);
 		}
-    	MyDiff.Solver();
+    	lDiff.Solver();
     	time++;
     }
     t.stop();
