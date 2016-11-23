@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <mpi>
+#include <mpi.h>
 #include "timer.hpp"
 
 
@@ -56,12 +56,13 @@ public:
 
 int main(int argc, char const *argv[])
 {
+	MPI_Init(&argc, &argv);
 	MPI_Statue status;
 	int size;
 	int rank;
 
-	MPI_Comm_rank(&rank);
-	MPI_Comm_size(&size);
+	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &size);
 
 	if(rank==0) {
 		if (argc < 6) {
@@ -100,5 +101,6 @@ int main(int argc, char const *argv[])
     std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
     
     MyDiff.Write("output");
+    MPI_Finalize();
 	return 0;
 }
