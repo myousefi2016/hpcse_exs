@@ -96,15 +96,20 @@ int main(int argc, char *argv[])
     for(int i; i < lNr; i++) {
     	lDiff.rho_[i] = MyDiff.rho_[rank*(lNr - 1) + i];
     }
+    double ds;
+    double dr;
     while(time < Nt) {
     	if(rank==0) {
-			MPI_Send(&lDiff.rho_[lNr-2], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&lDiff.rho_[lNr-1], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &status);
+    		ds = lDiff.rho_[lNr-2];
+			MPI_Send(&ds, 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&dr, 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &status);
+    		lDiff.rho_[lNr-1] = dr;
 		}
 		else if(rank==size-1) {
-			MPI_Send(&lDiff.rho_[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&lDiff.rho_[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
-
+    		ds = lDiff.rho_[1];
+			MPI_Send(&ds, rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&dr, rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
+    		lDiff.rho_[0] = dr;
 		}
 		else {
 			MPI_Send(&lDiff.rho_[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
