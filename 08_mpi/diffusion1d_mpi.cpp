@@ -54,10 +54,10 @@ public:
 	}
 };
 
-int main(int argc, char const *argv[])
+int main(int argc, char *argv[])
 {
 	MPI_Init(&argc, &argv);
-	MPI_Statue status;
+	MPI_Status status;
 	int size;
 	int rank;
 
