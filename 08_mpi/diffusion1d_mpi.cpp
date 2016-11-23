@@ -116,9 +116,13 @@ int main(int argc, char *argv[])
     	time++;
     }
     t.stop();
+    if(rank==0) {
+    	std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
+    }
 
-    std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
-    
+    for(int i; i < lNr; i++) {
+    	MyDiff.rho_[rank*(lNr - 1) + i] = lDiff.rho_[i];
+    }
     MyDiff.Write("output");
     MPI_Finalize();	
 	return 0;
