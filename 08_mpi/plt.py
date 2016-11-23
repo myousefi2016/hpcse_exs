@@ -8,6 +8,7 @@ f = open("output")
 lines = f.readlines()
 for line in lines:
 	data = line.split()
+	print(data)
 	x.append(float(data[0]))
 	y.append(float(data[1]))
 

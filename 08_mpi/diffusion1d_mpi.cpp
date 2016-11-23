@@ -11,10 +11,10 @@ class Diffusion1D {
 private:
 	double D_, L_, dt_, dr_, fra_;
 	int Nr_;
-	std::vector<double> rho_tmp;
 
 public:
 	std::vector<double> rho_;
+	std::vector<double> rho_tmp;
 
 	Diffusion1D(const double D, 
 		        const double L, 
@@ -93,12 +93,19 @@ int main(int argc, char *argv[])
 		
     MyDiff.Initialization();
     MyDiff.Write("input");
-    for(int i; i < lNr; i++) {
+    for(int i = 0; i < lNr; i++) {
     	lDiff.rho_[i] = MyDiff.rho_[rank*(lNr - 1) + i];
+    	lDiff.rho_tmp[i] = MyDiff.rho_[rank*(lNr - 1) + i];
     }
-    double ds;
-    double dr;
+    double ds = 0;
+    double dr = 0;
+
+    t.start();
+
+    // std::cout << rank << "\t" << size << std::endl;
     while(time < Nt) {
+    	lDiff.Solver();
+
     	if(rank==0) {
     		ds = lDiff.rho_[lNr-2];
 			MPI_Send(&ds, 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD);
@@ -107,17 +114,16 @@ int main(int argc, char *argv[])
 		}
 		else if(rank==size-1) {
     		ds = lDiff.rho_[1];
-			MPI_Send(&ds, rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&dr, rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&ds, 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&dr, 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
     		lDiff.rho_[0] = dr;
 		}
 		else {
-			MPI_Send(&lDiff.rho_[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&lDiff.rho_[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
-			MPI_Send(&lDiff.rho_[lNr-2], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&lDiff.rho_[lNr-1], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&lDiff.rho_[1], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&lDiff.rho_[0], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
+			MPI_Send(&lDiff.rho_[lNr-2], 1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD);
+			MPI_Recv(&lDiff.rho_[lNr-1], 1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &status);
 		}
-    	lDiff.Solver();
     	time++;
     }
     t.stop();
@@ -125,10 +131,14 @@ int main(int argc, char *argv[])
     	std::cout << "Timing : " << Nr << " " << 1 << " " << t.get_timing() << std::endl;
     }
 
-    for(int i; i < lNr; i++) {
+    for(int i=0; i < lNr; i++) {
     	MyDiff.rho_[rank*(lNr - 1) + i] = lDiff.rho_[i];
+    	std::cout << rank*(lNr - 1) + i << "\t" << MyDiff.rho_[rank*(lNr - 1) + i] << std::endl;
     }
-    MyDiff.Write("output");
+    if(rank==0) {
+    	// MPI_Barrier(MPI_COMM_WORLD);
+    	MyDiff.Write("output");
+    }
     MPI_Finalize();	
 	return 0;
 }
