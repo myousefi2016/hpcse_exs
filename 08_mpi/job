@@ -1,0 +1,28 @@
+#!/bin/bash
+#$ -cwd
+#$ -N diffusion1d 
+#$ -pe openmpi 2 
+#$ -l s_rt=23:59:00,h_rt=23:59:30
+
+###################################################
+source /usr/share/Modules/init/sh
+export -n -f module
+
+module add mpi/openmpi-1.4.3-intel-12.1
+###################################################
+# Set the environment variables:
+MPIEXEC=$OPENMPI/bin/mpiexec
+
+#ulimit -s unlimited
+export OMP_NUM_THREADS=1
+export OMPI_MCA_btl='openib,sm,self'
+# export OMPI_MCA_orte_process_binding=core
+
+
+CMD=./diffusion1d_mpi
+
+# The MPI command to run: 
+MPICMD="$MPIEXEC --prefix $OPENMPI -x LD_LIBRARY_PATH -x OMP_NUM_THREADS -x OMPI_MCA_btl -np $NSLOTS -machinefile $TMPDIR/machines $CMD $ARGS"
+
+$MPICMD
+################################################################################
