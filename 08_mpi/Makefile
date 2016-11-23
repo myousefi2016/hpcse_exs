@@ -18,8 +18,8 @@ diffusion1d:diffusion1d.cpp
 	g++ $(CFLAGS) -o diffusion1d diffusion1d.cpp
 diffusion1d_class:diffusion1d_class.cpp
 	g++ $(CFLAGS) -I $(INC) -o diffusion1d_class diffusion1d_class.cpp
-diffusion1d_mpi:diffusion1d.cpp
-	$(CC) $(CFLAGS) -o diffusion1d diffusion1d.cpp
+diffusion1d_mpi:diffusion1d_mpi.cpp
+	$(CC) $(CFLAGS) -o diffusion1d_mpi diffusion1d_mpi.cpp
 clean:
 	rm -f rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class
 	diffusion1d_mpi
