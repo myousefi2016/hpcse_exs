@@ -1,66 +1,72 @@
 #include <iostream>
 #include <cmath>
 #include <fstream>
+#include <vector>
+#include <string>
 
-class Diffusion1 {
+class Diffusion1D {
+private:
+	double D_, L_, dt_, dr_, fra_;
+	int Nr_, Nt_;
+	std::vector<double> rho_;
+	std::vector<double> rho_tmp;
+
 public:
-	Diffusion1(double L, int N, double dt, ) {
+	Diffusion1D(const double D, 
+		        const double L, 
+		        const int Nr, 
+		        const int Nt, 
+		        const double dt)
+	:D_(D), L_(L), Nr_(Nr), Nt_(Nt), dt_(dt)  //Using Initialization Lists to Initialize 
+	{
 		//
-		dr = L/(N-1);
+
+		dr_ = L_/(Nr_-1);
+		fra_ = D_*dt_/dr_/dr_;
+		rho_.resize(Nr_);
+		rho_tmp.resize(Nr_);
 	}
-}
+	void Initialization() {
+		for(int i =0; i< Nr_/2 - 1; i++) {
+			rho_[i] = 1;
+		}
+		for(int i = Nr_/2 - 1; i< Nr_ - 1; i++) {
+			rho_[i] = 0;
+		}
+	}
+	void Write(std::string filename) {
+		std::ofstream out_file(filename);
+		for(int i=0; i< Nr_; i++) {
+			out_file << dr_*i << "    " << rho_[i] << std::endl;
+		}
+		out_file.close();
+	}
+	void Solver() {
+		for(int i=1; i < Nr_ - 1; i++) {
+			rho_tmp[i] = fra_*(rho_[i+1] + rho_[i-1] - 2*rho_[i]) 
+			             + rho_[i];
+		}
+		std::swap(rho_, rho_tmp);
+	}
+};
 
 int main(int argc, char const *argv[])
 {
-	double xs = 0;
-	double xe = 4;
-	double dx = 0.001;
+	// Attention!!!
+	// convergence condition (dt)/(dr)**2 < 1/2
+	const double D  = std::stod(argv[1]);
+    const double L  = std::stod(argv[2]);
+    const int  Nr  = std::stoul(argv[3]);
+    const int  Nt  = std::stoul(argv[4]);
+    const double dt = std::stod(argv[5]);
 
-	double ts = 0;
-	double te = 10;
-	double dt = 0.001;
-
-	int nt = (te - ts)/dt;
-	int nx = (xe - xs)/dx;
-
-	double den[100000];
-	double den_new[100000];
-	// initialize the den
-	std::cout << "xs = " << xs
-	          << "\n xe = " << xe
-	          << "\n nx = " << nx
-	          << "\n ts = " << te
-	          << "\n te = " << te
-	          << "\n nt = " << nt << std::endl;
- 
-	for(int i=1; i< nx - 1; i++) {
-		den[i] = 1;
-	}
-	den[0] = 0;
-	den[1] = 0;
- 
-	std::ofstream input;
-	input.open("input_den.dat");
-	for(int i=0; i<nx; i++) {
-		input << xs + i*dx << "    " << den[i] << std::endl;
-	}
-
-	for(int i=0; i < nt; i++) {
-		for(int j=1; j < nx - 1; j++) {
-			den_new[j] = (den[j+1] + den[j-1] - 2*den[j])/dx/dx*dt 
-			             + den[j];
-		}
-		for(int j=1; j < nx - 1; j++) {
-			den[j] = den_new[j];
-		}
-	}
-	std::ofstream output;
-	output.open("output_den.dat");
-	for(int i=0; i<nx; i++) {
-		output << xs + i*dx << "    " << den[i] << std::endl;
-	}
-
-
-
+    Diffusion1D MyDiff(D, L, Nr, Nt, dt);
+		
+    MyDiff.Initialization();
+    MyDiff.Write("input");
+    for(int i; i < Nt; i++) {
+    	MyDiff.Solver();
+    }
+    MyDiff.Write("output");
 	return 0;
 }

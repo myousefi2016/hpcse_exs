@@ -5,6 +5,8 @@
 
 int main(int argc, char const *argv[])
 {
+	// Attention!!!
+	// convergence condition (dt)/(dr)**2 < 1/2
 	double D = 0.1;
 	double xs = 0;
 	double xe = 1;
@@ -12,7 +14,7 @@ int main(int argc, char const *argv[])
 
 	double ts = 0;
 	double te = 0.1;
-	double dt = 0.000001;
+	double dt = 0.0001;
 
 	int nt = (te - ts)/dt;
 	int nx = (xe - xs)/dx;

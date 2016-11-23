@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 x = []
 y = []
-f = open("output_den.dat")
+f = open("output")
 lines = f.readlines()
 for line in lines:
 	data = line.split()
