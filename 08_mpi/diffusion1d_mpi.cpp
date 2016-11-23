@@ -10,7 +10,7 @@
 class Diffusion1D {
 private:
 	double D_, L_, dt_, dr_, fra_;
-	int Nr_, Nt_;
+	int Nr_;
 	std::vector<double> rho_;
 	std::vector<double> rho_tmp;
 
@@ -18,9 +18,8 @@ public:
 	Diffusion1D(const double D, 
 		        const double L, 
 		        const int Nr, 
-		        const int Nt, 
 		        const double dt)
-	:D_(D), L_(L), Nr_(Nr), Nt_(Nt), dt_(dt)  //Using Initialization Lists to Initialize 
+	:D_(D), L_(L), Nr_(Nr), dt_(dt)  //Using Initialization Lists to Initialize 
 	{
 		//
 
@@ -52,6 +51,11 @@ public:
 		}
 		std::swap(rho_, rho_tmp);
 	}
+	voild set(double *rho) {
+		for(int i=0; i<Nr_ - 1; i ++ ) {
+			rho_[i] = rho[i]
+		}
+	}
 };
 
 int main(int argc, char *argv[])
@@ -81,18 +85,30 @@ int main(int argc, char *argv[])
     const int  Nt  = std::stoul(argv[4]);
     const double dt = std::stod(argv[5]);
 
-    double rho[Nr];
-
+    int lN = (Nr - 1)/size + 1;
 	// std::vector<double> rho_;
-
-
-    Diffusion1D MyDiff(D, L, Nr, Nt, dt);
+    Diffusion1D MyDiff(D, L, Nr, dt);
+    Diffusion1D lDiff(D, L, lNr, dt);
 		
     MyDiff.Initialization();
     MyDiff.Write("input");
-
-    t.start();
+    lDiff.set(MyDiff.rho_[rank*(lNr - 1):((rank + 1)]*lNr + 1)]
     while(time < Nt) {
+    	if(rank==0) {
+			MPI_Send(rho[lNr-2], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD)
+			MPI_Recv(rho[lNr-1], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &status)
+		}
+		else if(rank==size-1) {
+			MPI_Send(rho[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD)
+			MPI_Recv(rho[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status)
+
+		}
+		else {
+			MPI_Send(rho[1], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD)
+			MPI_Recv(rho[0], rank-1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status)
+			MPI_Send(rho[lNr-2], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD)
+			MPI_Recv(rho[lNr-1], rank+1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &status)
+		}
     	MyDiff.Solver();
     	time++;
     }
