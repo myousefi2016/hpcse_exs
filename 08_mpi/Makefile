@@ -4,6 +4,7 @@ CFLAGS=-std=c++11
 INC=inc/
 
 all:rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class
+	diffusion1d_mpi
 
 rank_size:rank_size.cpp
 	$(CC) $(CFLAGS) -o rank_size rank_size.cpp
@@ -20,4 +21,5 @@ diffusion1d_class:diffusion1d_class.cpp
 diffusion1d_mpi:diffusion1d.cpp
 	$(CC) $(CFLAGS) -o diffusion1d diffusion1d.cpp
 clean:
-	rm -f rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class diffusion1d_mpi
+	rm -f rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class
+	diffusion1d_mpi
