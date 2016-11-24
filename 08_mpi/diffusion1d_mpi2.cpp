@@ -133,10 +133,10 @@ int main(int argc, char *argv[])
 
     for(int i=0; i < lNr; i++) {
     	MyDiff.rho_[rank*(lNr - 1) + i] = lDiff.rho_[i];
-    	// std::cout << rank*(lNr - 1) + i << "\t" << MyDiff.rho_[rank*(lNr - 1) + i] << std::endl;
+    	std::cout << rank*(lNr - 1) + i << "\t" << MyDiff.rho_[rank*(lNr - 1) + i] << std::endl;
     }
     if(rank==0) {
-    	// MPI_Barrier(MPI_COMM_WORLD);
+    	MPI_Barrier(MPI_COMM_WORLD);
     	MyDiff.Write("output");
     }
     MPI_Finalize();	
