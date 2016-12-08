@@ -9,7 +9,7 @@ files = [['density_000.dat', 'density_025.dat', 'density_050.dat', 'density_075.
 times = [[0.00, 0.25, 0.50, 0.75],
          [1.00, 1.25, 1.50, 1.75]]
 
-N = 64
+N = 512 
 Np = 1000
 
 fig = plt.figure()
