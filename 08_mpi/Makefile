@@ -3,7 +3,7 @@ CC=mpic++
 CFLAGS=-std=c++11
 INC=inc/
 
-all:rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class diffusion1d_mpi
+all:rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class diffusion1d_mpi diffusion1d_mpi2 pi_serial pi_mpi
 
 rank_size:rank_size.cpp
 	$(CC) $(CFLAGS) -o rank_size rank_size.cpp
@@ -19,5 +19,11 @@ diffusion1d_class:diffusion1d_class.cpp
 	g++ $(CFLAGS) -I $(INC) -o diffusion1d_class diffusion1d_class.cpp
 diffusion1d_mpi:diffusion1d_mpi.cpp
 	$(CC) $(CFLAGS) -I $(INC) -o diffusion1d_mpi diffusion1d_mpi.cpp
+diffusion1d_mpi2:diffusion1d_mpi2.cpp
+	$(CC) $(CFLAGS) -I $(INC) -o diffusion1d_mpi2 diffusion1d_mpi2.cpp
+pi_serial:
+	g++ $(CFLAGS) -I $(INC) -o pi_serial pi_serial.cpp
+pi_mpi:
+	$(CC) $(CFLAGS) -I $(INC) -o pi_mpi pi_mpi.cpp
 clean:
-	rm -f rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class diffusion1d_mpi
+	rm -f rank_size hello_world mp_int deadblock5 diffusion1d diffusion1d_class diffusion1d_mpi diffusion1d_mpi2 pi_serial pi_mpi

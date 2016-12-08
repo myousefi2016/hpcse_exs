@@ -13,6 +13,7 @@ private:
 	int Nr_;
 
 public:
+
 	std::vector<double> rho_;
 	std::vector<double> rho_tmp;
 
@@ -45,14 +46,38 @@ public:
 		}
 		out_file.close();
 	}
-	void Solver() {
-		for(int i=1; i < Nr_ - 1; i++) {
+	void Solver(int rank, int size, MPI_Status status, MPI_Request reqs[4]) {
+		if(rank==0) {
+			MPI_Isend(&rho_[Nr_-2], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &reqs[0]);
+			MPI_Irecv(&rho_[Nr_-1], 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &reqs[1]);
+		}
+		else if(rank==size-1) {
+			MPI_Isend(&rho_[1], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &reqs[0]);
+			MPI_Irecv(&rho_[0], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &reqs[1]);
+		}
+		else {
+			MPI_Isend(&rho_[1], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &reqs[0]);
+			MPI_Irecv(&rho_[0], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &reqs[1]);
+			MPI_Isend(&rho_[Nr_-2], 1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &reqs[2]);
+			MPI_Irecv(&rho_[Nr_-1], 1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &reqs[3]);
+		}
+		//
+		for(int i=2; i < Nr_ - 2; i++) {
 			rho_tmp[i] = fra_*(rho_[i+1] + rho_[i-1] - 2*rho_[i]) 
 			             + rho_[i];
 		}
+		if(rank==0 || rank==size-1) {
+        	MPI_Waitall(2, reqs, &status);
+		}
+		else
+		{
+        	MPI_Waitall(4, reqs, &status);
+		}
 		std::swap(rho_, rho_tmp);
+		//
+		
 	}
-	void set(double *rho) {
+	void Set(double *rho) {
 		for(int i=0; i<Nr_ - 1; i ++ ) {
 			rho_[i] = rho[i];
 		}
@@ -63,6 +88,7 @@ int main(int argc, char *argv[])
 {
 	MPI_Init(&argc, &argv);
 	MPI_Status status;
+	MPI_Request reqs[4];
 	int size;
 	int rank;
 
@@ -104,26 +130,7 @@ int main(int argc, char *argv[])
 
     // std::cout << rank << "\t" << size << std::endl;
     while(time < Nt) {
-    	lDiff.Solver();
-
-    	if(rank==0) {
-    		ds = lDiff.rho_[lNr-2];
-			MPI_Send(&ds, 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&dr, 1, MPI_DOUBLE, 1, 44, MPI_COMM_WORLD, &status);
-    		lDiff.rho_[lNr-1] = dr;
-		}
-		else if(rank==size-1) {
-    		ds = lDiff.rho_[1];
-			MPI_Send(&ds, 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&dr, 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
-    		lDiff.rho_[0] = dr;
-		}
-		else {
-			MPI_Send(&lDiff.rho_[1], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&lDiff.rho_[0], 1, MPI_DOUBLE, rank-1, 44, MPI_COMM_WORLD, &status);
-			MPI_Send(&lDiff.rho_[lNr-2], 1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD);
-			MPI_Recv(&lDiff.rho_[lNr-1], 1, MPI_DOUBLE, rank+1, 44, MPI_COMM_WORLD, &status);
-		}
+    	lDiff.Solver(rank, size, status, reqs);
     	time++;
     }
     t.stop();
