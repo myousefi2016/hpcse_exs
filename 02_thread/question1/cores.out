@@ -1,0 +1,6 @@
+threads: 1	time: 72.3007
+threads: 2	time: 68.9518
+threads: 4	time: 73.401
+threads: 8	time: 78.0471
+threads: 12	time: 81.097
+threads: 16	time: 76.6561

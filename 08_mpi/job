@@ -24,5 +24,5 @@ CMD=./diffusion1d_mpi
 # The MPI command to run: 
 MPICMD="$MPIEXEC --prefix $OPENMPI -x LD_LIBRARY_PATH -x OMP_NUM_THREADS -x OMPI_MCA_btl -np $NSLOTS -machinefile $TMPDIR/machines $CMD $ARGS"
 
-$MPICMD
+$MPICMD 1 1 100 1000 0.00001
 ################################################################################
