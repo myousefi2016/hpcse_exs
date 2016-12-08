@@ -81,6 +81,7 @@ public:
 				myfile << i*dr_ - L_/2 << "\t" << j*dr_ -L_/2 <<"\t" << rho_[i*N_+j] << std::endl;
 			}
 		}
+		myfile.close();
 	}
 };
 
