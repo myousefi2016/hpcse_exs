@@ -9,3 +9,6 @@ all:binary
 
 binary:binary.cpp
 	$(CC) $(CFLAGS) -o $@ $< -I $(INC)
+
+clean:
+	rm -rf binary
